@@ -1,0 +1,49 @@
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    header {
+        height: 15vh;
+
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+
+        .border {
+            width: 20%;
+        }
+
+        .titles {
+            flex: 1;
+            h2 {
+                padding-top: 25px;
+            }
+            h3 {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+    
+                gap: 5px;
+    
+                font-size: 1rem;
+            }
+    
+            h4 {
+                padding-bottom: 20px;
+            }
+        }
+
+        .actions {
+            padding: 10px;
+
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
+        }
+    }
+
+    main {
+        height: 85vh;
+    }
+}

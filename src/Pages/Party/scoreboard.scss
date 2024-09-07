@@ -1,0 +1,120 @@
+main#scoreboard {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .podium {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 75px;
+        height: 35vh;
+
+        .position {
+            &.first {
+                margin-bottom: 75px;
+            }
+
+            &.second {}
+
+            &.third {
+                margin-top: 75px;
+            }
+
+            .player {
+                position: relative;
+                height: 200px;
+                width: 150px;
+                border-radius: 10px;
+
+                .player-data {
+                    position: absolute;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+
+                    top: 2px;
+                    left: 2px;
+
+                    gap: 5px;
+
+                    span {
+                        padding: 2px 10px;
+                        border-radius: 5px;
+
+                        &.isMe {
+                            background-color: #a19bd9;
+                        }
+
+                        &.isHost {
+                            background-color: #ffa43d;
+                        }
+                    }
+                }
+
+                .player-username {
+                    position: absolute;
+                    $borderPadding: 5px;
+                    bottom: $borderPadding;
+                    left: $borderPadding;
+                    right: $borderPadding;
+                    background-color: rgba(0, 0, 0, 0.75);
+                    border-radius: 2.5px;
+                    padding: 2px 10px;
+                }
+
+                img {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                    border-radius: 5px;
+                }
+
+            }
+        }
+    }
+
+    .player-scoreboard {
+        width: 75%;
+        height: 30vh;
+        margin: 50px 0;
+
+        overflow: hidden;
+
+        ul {
+            max-height: 100%;
+            overflow-y: scroll;
+            -ms-overflow-style: none;
+
+            padding-bottom: 20px;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .position {
+                width: 50px;
+            }
+
+            .me {
+                span {
+                    font-weight: 800;
+                    color: #df9b1d;
+                }
+            }
+        }
+    }
+
+    .player-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        button {
+            width: 250px;
+        }
+    }
+
+}

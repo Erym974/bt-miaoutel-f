@@ -1,0 +1,89 @@
+#root {
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+
+  main {
+    flex: 1;
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.aic {
+  align-items: center;
+}
+
+.jcc {
+  justify-content: center;
+}
+
+.jcsb {
+    justify-content: space-between;
+}
+
+.d-none {
+    display: none;
+}
+
+$sizes: (
+    '0': 0,
+    '1': .25,
+    '2': .5,
+    '3': 1,
+    '4': 1.5,
+    '5': 3,
+);
+
+$sides: (
+    't': 'top',
+    'b': 'bottom',
+    'l': 'left',
+    'r': 'right'
+);
+
+$spacer: 16px;
+
+@each $size, $value in $sizes {
+    .p-#{$size} {
+        padding: $spacer * $value !important;
+    }
+    .m-#{$size} {
+        margin: $spacer * $value !important;
+    }
+
+    .px-#{$size} {
+        padding-left: ($spacer * $value) !important;
+        padding-right: ($spacer * $value) !important;
+    }
+
+    .mx-#{$size} {
+        margin-left: ($spacer * $value) !important;
+        margin-right: ($spacer * $value) !important;
+    }
+
+    .py-#{$size} {
+        padding-top: ($spacer * $value) !important;
+        padding-bottom: ($spacer * $value) !important;
+    }
+
+    .my-#{$size} {
+        margin-top: ($spacer * $value) !important;
+        margin-bottom: ($spacer * $value) !important;
+    }
+
+    @each $side, $vl in $sides {
+        .p#{$side}-#{$size} {
+            padding-#{$vl}: $spacer * $value !important;
+        }
+
+        .m#{$side}-#{$size} {
+            margin-#{$vl}: $spacer * $value !important;
+        }
+    }
+}
