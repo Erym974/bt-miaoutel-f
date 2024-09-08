@@ -35,14 +35,14 @@ export default function Party() {
 
     socket.on("response#get_player", OnGetPlayerResponse);
     socket.on("response#get_party", OnGetPartyResponse);
-    socket.on("response#leave_party", OnLeaveResponseResponse);
+    // socket.on("response#leave_party", OnLeaveResponseResponse);
     socket.on("kicked_by_host", OnKickedByHost);
     socket.on(`update_party`, OnPartyUpdated);
 
     return () => {
       socket.off("response#get_player");
       socket.off("response#get_party");
-      socket.off("response#leave_party");
+      // socket.off("response#leave_party");
       socket.off(`update_party`);
       socket.off(`kicked_by_host`);
     };
@@ -58,9 +58,9 @@ export default function Party() {
     if (!party) return navigate(`/join/${gameId}`);
     setPartyDatas(party);
   };
-  const OnLeaveResponseResponse = () => {
-    return navigate(`/`);
-  };
+  // const OnLeaveResponseResponse = () => {
+  //   return navigate(`/`);
+  // };
 
   const OnPartyUpdated = (party: PartyType) => {
     setPartyDatas(party);
@@ -87,7 +87,7 @@ export default function Party() {
             </div>
             <div className="border actions">
               <Rules />
-              <button onClick={() => socket.emit("leave_party", gameId)} className="btn-danger">Quitter</button>
+              {/* <button onClick={() => socket.emit("leave_party", gameId)} className="btn-danger">Quitter</button> */}
             </div>
           </header>
           {partyDatas.gameState === "Lobby" && (

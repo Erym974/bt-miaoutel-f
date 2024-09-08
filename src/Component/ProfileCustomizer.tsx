@@ -19,9 +19,10 @@ export default function ProfileCustomizer({
   const randomPicture = Math.floor(Math.random() * 13) + 1;
 
   const [pictureId, setPictureId] = useState<number>(randomPicture);
-  const [username, setUsername] = useState<string>(`Guest#${Math.floor(Math.random() * 9999) + 1000}`);
+  const [username, setUsername] = useState<string>(`Guest${Math.floor(Math.random() * 9999) + 1000}`);
 
   useEffect(() => {
+    if(username.length > 14) return
     setProfile({ ...profile, username: username });
   }, [username]);
 
@@ -32,6 +33,12 @@ export default function ProfileCustomizer({
   useEffect(() => {
     setProfile({ username: username, profile: `${config.BACK_URL}/profile_${pictureId}.jpg` });
   }, [])
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, '');
+    setUsername(filteredValue.slice(0, 14));
+  };
 
   return (
     <div className="profile-customizer">
@@ -48,9 +55,7 @@ export default function ProfileCustomizer({
         placeholder="Username"
         className="mb-2"
         value={username}
-        onChange={(e) => {
-          setUsername(e.target.value);
-        }}
+        onChange={handleChange}
       />
     </div>
   );

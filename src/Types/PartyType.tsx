@@ -8,6 +8,7 @@ export type PartyType = {
     players: PlayerType[],
     currentTrack: TrackType | null,
     currentRound: PlayerType[],
+    scoreboard: PlayerType[],
     roundFinished: boolean,
     gameState: string,
 }

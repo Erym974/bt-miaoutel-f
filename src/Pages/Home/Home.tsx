@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -9,16 +9,17 @@ import OTPInput from "../../Component/OTPInput";
 import Rules from "../../Component/Rules";
 
 export default function Home() {
+
   const [partyId, setPartyId] = useState("");
 
   const navigate = useNavigate();
 
   const HostGame = () => {
-    navigate('/host')
+    navigate("/host");
   };
 
   const JoinGame = () => {
-    if(partyId.length > 0) {
+    if (partyId.length > 0) {
       socket.emit("check_party", { id: partyId });
     } else {
       toast.error("Veuillez renseigner un code d'invitation valide");
@@ -32,7 +33,7 @@ export default function Home() {
       if (!partyDatas) {
         toast.error("La partie n'existe pas");
       } else {
-        navigate(`/join/${partyDatas.id}`)
+        navigate(`/join/${partyDatas.id}`);
       }
     });
 
@@ -54,8 +55,10 @@ export default function Home() {
       </header>
       <main>
         <div className="join">
-            <OTPInput length={6} setCode={setPartyId} />
-          <button className="mt-2" onClick={() => JoinGame()}>Rejoindre une partie</button>
+          <OTPInput length={6} setCode={setPartyId} />
+          <button className="mt-2" onClick={() => JoinGame()}>
+            Rejoindre une partie
+          </button>
         </div>
         <hr />
         <div className="host">

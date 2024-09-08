@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PlayerType } from "../../Types/PlayerType";
 
 import { MdPersonRemove, MdClose  } from "react-icons/md";
-import { FaPlay, FaCrown } from "react-icons/fa";
+import { FaPlay, FaCrown, FaExternalLinkAlt  } from "react-icons/fa";
 
 import "./lobby.scss";
 import { PartyType } from "../../Types/PartyType";
@@ -36,6 +36,11 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
     socket.emit("promote_player", { id: partyDatas.id, player });
   }
 
+  const copyInviteLink = () => {
+    navigator.clipboard.writeText(`${inviteLink}${partyDatas.id}`);
+    toast.success('Copié!');
+  }
+ 
   return (
     <>
       <main id="lobby">
@@ -74,7 +79,7 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
               id="invite-link"
               value={`${inviteLink}${partyDatas.id}`}
             />
-            <button onClick={() => {navigator.clipboard.writeText(`${inviteLink}${partyDatas.id}`); toast.success('Copié!')}}>Copier</button>
+            <button onClick={() => copyInviteLink()}><span>Copier</span></button>
           </div>
           <div className="invite-code mt-3">
             <span>
@@ -85,19 +90,26 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
         {currentPlayer.id === partyDatas.host.id && (
           <div className="settings mb-4">
             <h3>Lien de la vidéo : </h3>
-            <input
-              type="text"
-              name="video-url"
-              id="video-url"
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-            />
-            <button
-              className="mt-2"
-              onClick={() => setVideoViewer(!videoViewer)}
-            >
-              <FaPlay />
-            </button>
+            <div className="video-url">
+              <input
+                type="text"
+                name="video-url"
+                id="video-url"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+              />
+              <button
+                onClick={() => setVideoViewer(!videoViewer)}
+              >
+                <FaPlay />
+              </button>
+              <a
+                href="https://www.submagic.co/tools/youtube-video-downloader"
+                target="_blank"
+              >
+                <FaExternalLinkAlt  />
+              </a>
+            </div>
 
             <div className={`video-viewer ${!videoViewer ? "d-none" : ""}`}>
               <div className="player">
@@ -119,7 +131,7 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
           </div>
         )}
         <div className="start-game">
-          {currentPlayer.id === partyDatas.host.id && <button onClick={() => startGame()} disabled={partyDatas.players.length <= 1 || !videoUrl}>
+          {currentPlayer.id === partyDatas.host.id && <button onClick={() => startGame()} disabled={!videoUrl}>
             Commencer la partie
           </button>}
         </div>

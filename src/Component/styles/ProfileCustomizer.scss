@@ -1,13 +1,19 @@
-.profile-picture {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+.profile-customizer {
+    .profile-picture {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
 
-    img {
-        height: 200px;
-        width: 200px;
-        object-fit: cover;
-        border-radius: 20px;
+        img {
+            height: 200px;
+            width: 200px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    }
+
+    input {
+        padding: 5px 10px;
     }
 }

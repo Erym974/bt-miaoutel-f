@@ -5,6 +5,7 @@ import { PlayerType } from "../../Types/PlayerType";
 import { PartyType } from "../../Types/PartyType";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket";
+import ConfettiComponent from "../../Component/ConfettiComponent";
 
 interface ScoreboardProps {
   partyDatas: PartyType;
@@ -43,46 +44,47 @@ export default function Scoreboard({
 
   return (
     <>
+      <ConfettiComponent />
       <main id="scoreboard">
         <div className="podium">
           <div className="position second">
             <div className="player">
-              <img src={partyDatas.players[1]?.profile} alt="" className="profile" />
+              <img src={partyDatas.scoreboard[1]?.profile} alt="" className="profile" />
               <div className="player-data">
-                {partyDatas.players[1]?.id === currentPlayer.id && (
+                {partyDatas.scoreboard[1]?.id === currentPlayer.id && (
                   <span className="isMe">You</span>
                 )}
               </div>
-              <span className="player-username">{partyDatas.players[1]?.username}</span>
+              <span className="player-username">{partyDatas.scoreboard[1]?.username}</span>
             </div>
           </div>
           <div className="position first">
             <div className="player">
-              <img src={partyDatas.players[0]?.profile} alt="" className="profile" />
+              <img src={partyDatas.scoreboard[0]?.profile} alt="" className="profile" />
               <div className="player-data">
-                {partyDatas.players[0]?.id === currentPlayer.id && (
+                {partyDatas.scoreboard[0]?.id === currentPlayer.id && (
                   <span className="isMe">You</span>
                 )}
               </div>
-              <span className="player-username">{partyDatas.players[0]?.username}</span>
+              <span className="player-username">{partyDatas.scoreboard[0]?.username}</span>
             </div>
           </div>
           <div className="position third">
             <div className="player">
-              <img src={partyDatas.players[2]?.profile} alt="" className="profile" />
+              <img src={partyDatas.scoreboard[2]?.profile} alt="" className="profile" />
               <div className="player-data">
-                {partyDatas.players[2]?.id === currentPlayer.id && (
+                {partyDatas.scoreboard[2]?.id === currentPlayer.id && (
                   <span className="isMe">You</span>
                 )}
               </div>
-              <span className="player-username">{partyDatas.players[2]?.username}</span>
+              <span className="player-username">{partyDatas.scoreboard[2]?.username}</span>
             </div>
           </div>
         </div>
         <div className="player-scoreboard">
             <h3>Scoreboard</h3>
             <ul>
-              {partyDatas.players.map((player, index) => (
+              {partyDatas.scoreboard.map((player, index) => (
                 <li
                   key={player.id}
                   className={`px-2 mb-1 py-1 d-flex aic jcsb ${currentPlayer.id === player.id ? 'me' : ''}`}
