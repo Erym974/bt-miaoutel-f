@@ -4,6 +4,7 @@ import { ProfileType } from "../Types/ProfileType";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 
 import './styles/ProfileCustomizer.scss';
+import config from "../config";
 
 interface ProfileCustomizer {
   setProfile: (value: ProfileType) => void;
@@ -25,11 +26,11 @@ export default function ProfileCustomizer({
   }, [username]);
 
   useEffect(() => {
-    setProfile({ ...profile, profile: `http://localhost:3001/profile_${pictureId}.jpg` });
+    setProfile({ ...profile, profile: `${config.BACK_URL}/profile_${pictureId}.jpg` });
   }, [pictureId]);
 
   useEffect(() => {
-    setProfile({ username: username, profile: `http://localhost:3001/profile_${pictureId}.jpg` });
+    setProfile({ username: username, profile: `${config.BACK_URL}/profile_${pictureId}.jpg` });
   }, [])
 
   return (

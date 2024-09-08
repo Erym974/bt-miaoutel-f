@@ -9,6 +9,7 @@ import { PartyType } from "../../Types/PartyType";
 import { socket } from "../../socket";
 import ReactPlayer from "react-player";
 import { toast } from "react-toastify";
+import config from "../../config";
 
 interface LobbyProps {
   partyDatas: PartyType;
@@ -20,7 +21,7 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
 
   const [videoUrl, setVideoUrl] = useState("");
   const [videoViewer, setVideoViewer] = useState(false);
-  const inviteLink = "http://localhost:5173/join/";
+  const inviteLink = `${config.FRONT_URL}/join/`;
 
   const startGame = () => {
     if (currentPlayer.id === partyDatas.host.id) {
