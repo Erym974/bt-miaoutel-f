@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileCustomizer from "../../Component/ProfileCustomizer";
 import { ProfileType } from "../../Types/ProfileType";
 import { socket } from "../../socket";

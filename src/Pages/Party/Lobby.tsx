@@ -17,7 +17,6 @@ interface LobbyProps {
 }
 
 export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
-  const onPlayerJoinGame = (player: PlayerType) => {};
 
   const [videoUrl, setVideoUrl] = useState("");
   const [videoViewer, setVideoViewer] = useState(false);

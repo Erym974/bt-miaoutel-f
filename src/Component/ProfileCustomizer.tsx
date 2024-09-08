@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProfileType } from "../Types/ProfileType";
 
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";

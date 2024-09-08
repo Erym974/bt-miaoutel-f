@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaUsers } from "react-icons/fa6";
 
 import "./party.scss";
@@ -58,7 +58,7 @@ export default function Party() {
     if (!party) return navigate(`/join/${gameId}`);
     setPartyDatas(party);
   };
-  const OnLeaveResponseResponse = (party: PartyType | null) => {
+  const OnLeaveResponseResponse = () => {
     return navigate(`/`);
   };
 

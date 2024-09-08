@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./scoreboard.scss";
 import { PlayerType } from "../../Types/PlayerType";
 import { PartyType } from "../../Types/PartyType";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket";
 
 interface ScoreboardProps {
