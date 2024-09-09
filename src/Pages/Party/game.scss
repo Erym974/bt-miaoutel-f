@@ -226,9 +226,8 @@
             section.right,
             section.left {
                 width: 100%;
-
-                
             }
+            
 
             .right {
                 padding-bottom: 20px;
@@ -242,16 +241,21 @@
 
             section.middle {
                 order: 1;
+                
+                .video > div:first-child {
+                    width: 100% !important;
 
-                video {
-                    width: 95%;
+                    video {
+                        width: 95% !important;
+                    }
                 }
+
             }
             section.left {
-                order: 2;
+                order: 3;
             }
             section.right {
-                order: 3;
+                order: 2;
             }
             
         }
