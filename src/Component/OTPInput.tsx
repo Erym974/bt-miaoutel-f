@@ -96,6 +96,7 @@ export default function OTPInput({ length, setCode }: OTPInputType) {
         return (
           <input
             key={index}
+            placeholder="_"
             type="text"
             value={value}
             ref={(input) =>

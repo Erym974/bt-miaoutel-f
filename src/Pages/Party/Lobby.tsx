@@ -134,10 +134,11 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
           <div className="invite-link">
             <input
               type="text"
-              disabled
+              style={{ cursor: "pointer" }}
               name="invite-link"
               id="invite-link"
               value={`${inviteLink}${partyDatas.id}`}
+              onClick={() => copyInviteLink()}
             />
             <button onClick={() => copyInviteLink()}>
               <span className="copy">Copier</span>

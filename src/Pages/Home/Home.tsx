@@ -55,6 +55,7 @@ export default function Home() {
       </header>
       <main>
         <div className="join">
+          <h2>Code de la partie : </h2>
           <OTPInput length={6} setCode={setPartyId} />
           <button className="mt-2" onClick={() => JoinGame()}>
             Rejoindre une partie
@@ -62,7 +63,7 @@ export default function Home() {
         </div>
         <hr />
         <div className="host">
-          <button onClick={() => HostGame()}>Héberger une partie</button>
+          <button onClick={() => HostGame()}>Créer une partie</button>
         </div>
       </main>
     </div>

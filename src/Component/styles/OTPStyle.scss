@@ -9,5 +9,10 @@
         margin: 5px;
         text-align: center;
         font-size: clamp(1em, 5vw, 5em);
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        background-color: lighten(#1a1a1a, 10%);
+        color: #fff;
     }
 }

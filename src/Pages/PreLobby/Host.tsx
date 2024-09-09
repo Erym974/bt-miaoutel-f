@@ -51,12 +51,12 @@ export default function Host() {
     <div id="preLobby">
       <header>
         <div className="titles">
-          <h1>Héberger une partie</h1>
+          <h1>Créer une partie</h1>
         </div>
       </header>
       <main>
         <ProfileCustomizer setProfile={setProfile} profile={profile} />
-        <button className="hostBtn" onClick={() => HostGame()}>Héberger la partie</button>
+        <button className="hostBtn" onClick={() => HostGame()}>Créer la partie</button>
       </main>
     </div>
   );

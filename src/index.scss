@@ -43,11 +43,12 @@ button {
   color: #fff;
   cursor: pointer;
   transition: border-color 0.25s;
+  border: 1px solid #fff;
 }
 
 a,
 button:hover {
-  border-color: #646cff;
+  border-color: #646cff !important;
 }
 a,
 button:focus,

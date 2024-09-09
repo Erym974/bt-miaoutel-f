@@ -13,7 +13,7 @@ export default function Rules() {
         <div className={`rules-dialog ${!showRules ? 'd-none' : ''}`}>
             <div className="rules-content">
                 <section className="rules-header">
-                    <h1>Règles conseillé </h1>
+                    <h1>Règles conseillées </h1>
                     <div className="close-rules">
                         <IoMdClose onClick={() => setShowRules(false)}/>
                     </div>
