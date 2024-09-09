@@ -55,11 +55,12 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
     };
   }, []);
 
-  const UpdateScore = (player: PlayerType, amount: number) => {
+  const UpdateScore = (player: PlayerType, amount: number, inRound: boolean = false) => {
     socket.emit("update_score", {
       id: partyDatas.id,
       playerId: player.id,
       amount,
+      inRound,
     });
   };
 
@@ -78,6 +79,10 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
   const EndGame = () => {
     socket.emit("end_game", { id: partyDatas.id });
   };
+
+  const SkipRound = () => {
+    socket.emit("skip_round", { id: partyDatas.id });
+  }
 
   const ToggleRound = () => {
     socket.emit(partyDatas.roundFinished ? "resume_turn" : "end_turn", {
@@ -155,9 +160,11 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
             </ul>
           </div>
           {currentPlayer.id === partyDatas.host.id && (
-            <button onClick={() => EndGame()} className="mt-2">
-              Terminer la partie
-            </button>
+            <div className=" actions mt-2">
+              <button onClick={() => EndGame()} >
+                Terminer la partie
+              </button>
+            </div>
           )}
         </section>
         <section className="middle">
@@ -222,7 +229,7 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
                         : "rgba(0, 0, 0, 0)",
                   }}
                 >
-                  <div className="d-flex aic jcc">
+                  <div className="left">
                     <img
                       src={player.profile}
                       alt=""
@@ -232,31 +239,34 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
                     />
                     <span>{player.username}</span>
                   </div>
-                  {partyDatas.roundFinished && (
                     <div className="right">
-                      {currentPlayer.id === partyDatas.host.id && (
-                        <button onClick={() => UpdateScore(player, -1)}>
+                      {currentPlayer.id === partyDatas.host.id && partyDatas.roundFinished && (
+                        <button onClick={() => UpdateScore(player, -1, true)}>
                           -1
                         </button>
                       )}
-                      <span className="mx-2">{player.score}</span>
-                      {currentPlayer.id === partyDatas.host.id && (
-                        <button onClick={() => UpdateScore(player, 1)}>
+                      <span className="mx-2">{ partyDatas.currentRoundScore[player.id] != 0 ? partyDatas.currentRoundScore[player.id] > 0 ? "+" : "-" : ''} {partyDatas.currentRoundScore[player.id].toString().replace('-', '')}</span>
+                      {currentPlayer.id === partyDatas.host.id && partyDatas.roundFinished && (
+                        <button onClick={() => UpdateScore(player, 1, true)}>
                           +1
                         </button>
                       )}
                     </div>
-                  )}
                 </li>
               ))}
             </ul>
           </div>
           {currentPlayer.id === partyDatas.host.id && (
-            <button onClick={() => ToggleRound()} className="mt-2">
-              {partyDatas.roundFinished
-                ? "Reprendre la manche"
-                : "Terminer la manche"}
-            </button>
+            <div className="actions mt-2">
+              <button onClick={() => ToggleRound()} >
+                {partyDatas.roundFinished
+                  ? "Reprendre la manche"
+                  : "Terminer la manche"}
+              </button>
+              {!partyDatas.roundFinished && <button onClick={() => SkipRound()} >
+                Passer
+              </button>}
+            </div>
           )}
         </section>
       </main>

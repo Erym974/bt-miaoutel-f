@@ -64,6 +64,7 @@
                 h3 {
                     padding: 15px 0;
                 }
+
             }
 
             .current-round {
@@ -79,14 +80,50 @@
                     max-height: 100%;
                     overflow-y: scroll;
                     -ms-overflow-style: none;
+                    margin: 20px 0;
 
                     &::-webkit-scrollbar {
                         display: none;
+                    }
+
+                    li {
+                        display: flex;
+                        justify-content: space-between;
+                        
+                        .left {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        }
+
+                        .right {
+                            display: flex;
+                            justify-content: flex-end !important;
+                            align-items: center;
+
+                            span {
+                                width: 40px;
+                            }
+                        }
                     }
                 }
 
                 h3 {
                     padding: 15px 0;
+                }
+            }
+
+            .actions {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+
+                button {
+                    width: 100%;
+
+                    &:nth-child(2) {
+                        width: 35%;
+                    }
                 }
             }
         }
