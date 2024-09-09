@@ -6,9 +6,8 @@ import { PlayerType } from "../../Types/PlayerType";
 import { PartyType } from "../../Types/PartyType";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import ParticleComponent from "../../Component/ParticleComponent";
 
-
+import './preLobby.scss'
 
 export default function Host() {
 
@@ -49,7 +48,7 @@ export default function Host() {
       }, [socket]);
 
   return (
-    <>
+    <div id="preLobby">
       <header>
         <div className="titles">
           <h1>Héberger une partie</h1>
@@ -57,8 +56,8 @@ export default function Host() {
       </header>
       <main>
         <ProfileCustomizer setProfile={setProfile} profile={profile} />
-        <button onClick={() => HostGame()}>Héberger la partie</button>
+        <button className="hostBtn" onClick={() => HostGame()}>Héberger la partie</button>
       </main>
-    </>
+    </div>
   );
 }

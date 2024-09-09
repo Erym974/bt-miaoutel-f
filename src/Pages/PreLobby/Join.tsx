@@ -7,6 +7,8 @@ import { PlayerType } from "../../Types/PlayerType";
 import { PartyType } from "../../Types/PartyType";
 import { toast } from "react-toastify";
 
+import './preLobby.scss'
+
 export default function Join() {
 
     const [profile, setProfile] = useState<ProfileType>()
@@ -66,7 +68,7 @@ export default function Join() {
       }, [socket]);
 
   return (
-    <>
+    <div id="preLobby">
       <header>
         <div className="titles">
           <h1>Rejoindre la partie de {partyDatas?.host.username}</h1>
@@ -76,6 +78,6 @@ export default function Join() {
         <ProfileCustomizer setProfile={setProfile} profile={profile} />
         <button onClick={() => JoinGame()}>Rejoindre la partie</button>
       </main>
-    </>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 

@@ -82,7 +82,7 @@ export default function Scoreboard({
           </div>
         </div>
         <div className="player-scoreboard">
-            <h3>Scoreboard</h3>
+            <h3 className="mb-2">Scoreboard</h3>
             <ul>
               {partyDatas.scoreboard.map((player, index) => (
                 <li

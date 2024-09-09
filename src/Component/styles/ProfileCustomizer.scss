@@ -1,15 +1,34 @@
 .profile-customizer {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
     .profile-picture {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
 
         img {
             height: 200px;
-            width: 200px;
+            aspect-ratio: 1 / 1;
             object-fit: cover;
             border-radius: 20px;
+        }
+
+        .actions {
+            width: 200px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+
+            button {
+                width: 50%;
+            }
         }
     }
 

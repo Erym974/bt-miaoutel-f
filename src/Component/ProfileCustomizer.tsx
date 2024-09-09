@@ -42,21 +42,28 @@ export default function ProfileCustomizer({
 
   return (
     <div className="profile-customizer">
-      <h2>Personnaliser votre profil</h2>
-
-      <div className="profile-picture my-5">
-        <button onClick={() => setPictureId(pictureId > 1 ? pictureId - 1 : pictureId)}><FaLongArrowAltLeft /></button>
-        <img src={profile?.profile} alt="Profile picture" />
-        <button onClick={() => setPictureId(pictureId < 13 ? pictureId + 1 : pictureId)}><FaLongArrowAltRight /></button>
+      <div className="profile-customizer-header">
+        <h2>Personnaliser votre profil</h2>
       </div>
 
-      <input
-        type="text"
-        placeholder="Username"
-        className="mb-2"
-        value={username}
-        onChange={handleChange}
-      />
+      <div className="profile-picture">
+        <img src={profile?.profile} alt="Profile picture" />
+        <div className="actions">
+          <button onClick={() => setPictureId(pictureId > 1 ? pictureId - 1 : pictureId)}><FaLongArrowAltLeft /></button>
+          <button onClick={() => setPictureId(pictureId < 13 ? pictureId + 1 : pictureId)}><FaLongArrowAltRight /></button>
+        </div>
+      </div>
+
+      <div className="profile-customizer-footer">
+        <input
+          type="text"
+          placeholder="Username"
+          className="mb-2"
+          value={username}
+          onChange={handleChange}
+        />
+      </div>
+
     </div>
   );
 }

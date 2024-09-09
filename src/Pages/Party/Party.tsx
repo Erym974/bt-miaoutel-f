@@ -74,7 +74,7 @@ export default function Party() {
   return (
     <>
       {currentPlayer && partyDatas && (
-        <>
+        <div id="party">
           <header>
             <div className="border"></div>
             <div className="titles">
@@ -99,7 +99,7 @@ export default function Party() {
           {partyDatas.gameState === "Scoreboard" && (
             <Scoreboard partyDatas={partyDatas} currentPlayer={currentPlayer} />
           )}
-        </>
+        </div>
       )}
     </>
   );

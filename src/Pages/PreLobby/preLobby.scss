@@ -1,0 +1,32 @@
+#preLobby {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h1{
+            padding-top: 25px;
+            font-size: clamp(2em, 5vw, 5em);
+        }
+    }
+
+    main {
+        flex: 1;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        gap: 20px;
+
+        .joinBtn,
+        .hostBtn {
+            width: 50%;
+        }
+    }
+}

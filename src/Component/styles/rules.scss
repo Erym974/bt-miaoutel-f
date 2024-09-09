@@ -25,6 +25,8 @@
             height: 80vh;
             width: 70%;
 
+            user-select: none;
+
             .rules-header {
                 position: relative;
                 height: 15%;
@@ -49,15 +51,37 @@
 
                 height: 85%;
                 overflow-y: auto;
-    
-                // remove scrollbar 
                 scrollbar-width: none;
-
                 text-align: left;
+
+                ul {
+                    li {
+                        list-style: inside;
+                    }
+                }
             }
         }
 
 
+    }
+
+    @media screen and (max-width: 768px) {
+        .rules-dialog {
+            .rules-content {
+                width: 90%;
+
+                .rules-header {
+                    font-size: 0.5em;
+
+                    .close-rules {
+                        top: 0px;
+                        right: 0px;
+                        font-size: 2rem;
+                    }
+                }
+            }
+        }
+        
     }
 
 }

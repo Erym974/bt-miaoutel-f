@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -43,7 +43,7 @@ export default function Home() {
   }, [socket]);
 
   return (
-    <div className="Home">
+    <div id="home">
       <header>
         <div className="border"></div>
         <div className="titles">
