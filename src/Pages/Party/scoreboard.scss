@@ -31,6 +31,10 @@
                     width: 150px;
                     border-radius: 10px;
 
+                    &.team {
+                        border: 4px solid;
+                    }
+
                     .player-data {
                         position: absolute;
                         width: 100%;
@@ -78,6 +82,29 @@
             }
         }
 
+        .teams-scoreboard {
+            width: 75%;
+            max-height: 25vh;
+
+            overflow: hidden;
+
+            ul {
+                max-height: 100%;
+                overflow-y: scroll;
+                -ms-overflow-style: none;
+
+                padding-bottom: 20px;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .position {
+                    width: 50px;
+                }
+            }
+        }
+
         .player-scoreboard {
             width: 75%;
             height: 25vh;
@@ -105,6 +132,15 @@
                         color: #df9b1d;
                     }
                 }
+
+                span.player-badge {
+                    font-weight: 800;
+                    border-radius: 5px;
+                    padding: 2.5px 5px;
+                    font-size: 8px;
+                    color: #fff !important;
+                    vertical-align: top;
+                }
             }
         }
 
@@ -126,6 +162,7 @@
                 display: none;
             }
 
+            .teams-scoreboard,
             .player-scoreboard {
                 flex: 1;
 

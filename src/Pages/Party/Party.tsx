@@ -7,7 +7,7 @@ import { PlayerType } from "../../Types/PlayerType";
 import Lobby from "./Lobby";
 import Game from "./Game";
 import Scoreboard from "./Scoreboard";
-import { PartyType } from "../../Types/PartyType";
+import { GameState, PartyType } from "../../Types/PartyType";
 import { socket } from "../../socket";
 import { toast } from "react-toastify";
 import Rules from "../../Component/Rules";
@@ -90,13 +90,13 @@ export default function Party() {
               {/* <button onClick={() => socket.emit("leave_party", gameId)} className="btn-danger">Quitter</button> */}
             </div>
           </header>
-          {partyDatas.gameState === "Lobby" && (
+          {partyDatas.gameState === GameState.Lobby && (
             <Lobby partyDatas={partyDatas} currentPlayer={currentPlayer} />
           )}
-          {partyDatas.gameState === "Game" && (
+          {partyDatas.gameState === GameState.Game && (
             <Game partyDatas={partyDatas} currentPlayer={currentPlayer} />
           )}
-          {partyDatas.gameState === "Scoreboard" && (
+          {partyDatas.gameState === GameState.Scoreboard && (
             <Scoreboard partyDatas={partyDatas} currentPlayer={currentPlayer} />
           )}
         </div>

@@ -3,7 +3,7 @@ import { PlayerType } from "../../Types/PlayerType";
 import ReactPlayer from "react-player";
 
 import "./game.scss";
-import { PartyType } from "../../Types/PartyType";
+import { GameMode, PartyType } from "../../Types/PartyType";
 import { socket } from "../../socket";
 
 import { FaPlay, FaPause } from "react-icons/fa";
@@ -11,6 +11,8 @@ import { AiOutlineDisconnect } from "react-icons/ai";
 import { CiVolumeHigh } from "react-icons/ci";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
+import ScoreboardTeam from "../../Component/ScoreboardTeam";
+import { TeamType } from "../../Types/TeamType";
 
 interface GameProps {
   partyDatas: PartyType;
@@ -20,6 +22,15 @@ interface GameProps {
 export default function Game({ partyDatas, currentPlayer }: GameProps) {
   const [volume, setVolume] = useState(25);
   const playerRef = useRef<ReactPlayer>(null);
+
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      setDuration(playerRef.current.getDuration());
+    }
+  }, [playerRef.current])
 
   useEffect(() => {
     document.addEventListener("keyup", (e: KeyboardEvent) => {
@@ -64,6 +75,17 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
     });
   };
 
+  const parseTime = (time: number) => {
+    // return time in seconds to hh::mm:ss if there a hour or mm:ss time
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = Math.floor(time % 60);
+
+    const durationHours = Math.floor(duration / 3600);
+
+    return `${durationHours > 0 ? hours + ':' : ''}${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
   const Buzz = () => {
     socket.emit("buzz", { id: partyDatas.id });
   };
@@ -91,6 +113,7 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
   };
 
   const UpdateTracker = (playedSeconds: number) => {
+    setCurrentTime(playedSeconds);
     if (
       partyDatas?.currentTrack?.isPlaying &&
       partyDatas.host.id === currentPlayer.id
@@ -101,6 +124,25 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
       });
     }
   };
+
+  const UpdateTimeline = (playedSeconds: number) => {
+    if (
+      partyDatas?.currentTrack?.isPlaying &&
+      partyDatas.host.id === currentPlayer.id
+    ) {
+      setCurrentTime(playedSeconds);
+      socket.emit("edit_timeline", {
+        id: partyDatas.id,
+        currentTime: playedSeconds,
+      });
+      playerRef.current?.seekTo(playedSeconds);
+    }
+
+  }
+
+  const findPlayerTeam = (player: PlayerType) => {
+    return partyDatas.teams.find(team => team.players.find(p => p === player.id));
+  }
 
   return (
     <>
@@ -120,6 +162,15 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
           <div className="scoreboard">
             <h3>Scoreboard</h3>
             <ul>
+            {partyDatas.mode === GameMode.Team && <li className="subtitle">Equipes</li> }
+              {partyDatas.mode === GameMode.Team && <>
+                {partyDatas.teams.sort((a, b) => b.score - a.score).map((team: TeamType) => (
+                  <li key={team.name}>
+                    <ScoreboardTeam team={team} />
+                  </li>
+                ))}
+              </>}
+              {partyDatas.mode === GameMode.Team && <li className="subtitle">Joueurs</li> }
               {partyDatas.players.map((player, index) => (
                 <li
                   key={player.id}
@@ -134,14 +185,13 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
                   }}
                 >
                   <div className="left d-flex aic jcc">
-                    <img
-                      src={player.profile}
-                      alt=""
-                      height="35px"
-                      width="35px"
-                      className="mr-2"
-                    />
-                    <span className="mr-2">{player.username}</span>
+                    <div className="player-image mr-2">
+                      <img
+                        src={player.profile}
+                        alt=""
+                      />
+                    </div>
+                    <span className="mr-2">{player.username} {partyDatas.mode === GameMode.Team && <span className="player-badge" style={{ backgroundColor: findPlayerTeam(player).color }}>{findPlayerTeam(player).name}</span>}</span>
                     {!player.connected && <AiOutlineDisconnect />}
                   </div>
                   <div className="right">
@@ -176,22 +226,37 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
               volume={volume / 100}
               width="auto"
               height="100%"
+              onReady={() => setDuration(playerRef.current?.getDuration() ?? 0)}
               url={partyDatas?.currentTrack?.url}
+
             />
-            <div className="togglePlaying" onClick={() => TogglePlaying()}>
-              {partyDatas?.currentTrack?.isPlaying ? <FaPause /> : <FaPlay />}
-            </div>
-            <div className="volume">
-              <CiVolumeHigh />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                step={1}
-                value={volume}
-                onChange={(evt) => setVolume(Number(evt.target.value))}
-              />
-              <span>{volume}</span>
+            <div className={`video-player-controls ${currentPlayer.id === partyDatas.host.id ? 'host' : ''}`}>
+              <div className="togglePlaying" onClick={() => TogglePlaying()}>
+                {partyDatas?.currentTrack?.isPlaying ? <FaPause /> : <FaPlay />}
+              </div>
+              <div className="timeline">
+                <input
+                    type="range"
+                    min="0"
+                    max={duration}
+                    step={1}
+                    value={currentTime}
+                    onChange={({ target: { value } }) => UpdateTimeline(Number(value))}
+                  />
+                  <span>{parseTime(currentTime)} / {parseTime(duration)}</span>
+              </div>
+              <div className="volume">
+                <CiVolumeHigh />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step={1}
+                  value={volume}
+                  onChange={(evt) => setVolume(Number(evt.target.value))}
+                />
+                <span>{volume}</span>
+              </div>
             </div>
           </div>
           <div
@@ -237,7 +302,7 @@ export default function Game({ partyDatas, currentPlayer }: GameProps) {
                       width="35px"
                       className="mr-2"
                     />
-                    <span>{player.username}</span>
+                    <span className="mr-2">{player.username} {partyDatas.mode === GameMode.Team && <span className="player-badge" style={{ backgroundColor: findPlayerTeam(player).color }}>{findPlayerTeam(player).name}</span>}</span>
                   </div>
                     <div className="right">
                       {currentPlayer.id === partyDatas.host.id && partyDatas.roundFinished && (

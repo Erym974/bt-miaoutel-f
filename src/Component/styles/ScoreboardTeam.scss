@@ -1,0 +1,14 @@
+.team-scoreboard {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 5px;
+    margin-bottom: 5px;
+    
+    .vignette {
+        top: 0; left: 0;
+        height: 100%; width: 100%;
+        position: absolute;
+    }
+}

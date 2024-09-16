@@ -49,6 +49,12 @@
                     overflow-y: scroll;
                     -ms-overflow-style: none;
 
+                    li.subtitle {
+                        font-weight: 900;
+                        text-align: start;
+                        padding: 10px 5px;
+                    }
+
                     &::-webkit-scrollbar {
                         display: none;
                     }
@@ -59,7 +65,32 @@
                             color: #df9b1d;
                         }
                     }
+
+
+
+                    .player-image {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 35px;
+                        aspect-ratio: 1/1;
+
+                        img {
+                            height: 100%;
+                            width: 100%;
+                        }
+
+                        .team-color {
+                            position: absolute;
+                            top: 0; left: 0;
+                            height: 100%;
+                            width: 100%;
+                        }
+                    }
+
                 }
+
 
                 h3 {
                     padding: 15px 0;
@@ -89,7 +120,7 @@
                     li {
                         display: flex;
                         justify-content: space-between;
-                        
+
                         .left {
                             display: flex;
                             justify-content: space-between;
@@ -139,7 +170,7 @@
 
             .video {
                 position: relative;
-                height: 50%;
+                height: 65%;
                 width: 100%;
                 display: flex;
                 align-items: center;
@@ -152,32 +183,95 @@
                     object-position: center;
                 }
 
-                .togglePlaying {
+                .video-player-controls {
+
                     position: absolute;
                     bottom: 10px;
-                    left: 20px;
-                    cursor: pointer;
+                    opacity: 0;
+                    gap: 10px;
+                    height: 30px;
+                    transition: all ease-in-out 0.2s;
 
-                    background-color: rgba(0, 0, 0, 0.5);
-                    padding: 5px 15px;
-                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+
+                    padding: 0 15px ;
+
+                    width: 100%;
+
+                    .togglePlaying {
+                        height: 100%;
+                        cursor: pointer;
+
+                        background-color: rgba(0, 0, 0, 0.5);
+                        padding: 5px 15px;
+                        border-radius: 10px;
+                    }
+
+                    .timeline {
+                        height: 100%;
+                        flex: 1;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        padding: 5px 15px;
+                        border-radius: 10px;
+
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+
+                        input {
+                            flex: 1;
+
+                            &::-webkit-slider-thumb {
+                                opacity:0;
+                            }
+                        }
+
+                        span {
+                            font-size: 11px;
+                        }
+                    }
+
+                    .volume {
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+
+                        background-color: rgba(0, 0, 0, 0.5);
+                        padding: 5px 15px;
+                        border-radius: 10px;
+
+                        input {
+                            flex: 1;
+                        }
+
+                        span {
+                            width: 20px;
+                            font-size: 11px;
+                        }
+                    }
+
+                    &.host {
+                        .timeline {
+                            input {
+                                &:hover {
+                                    &::-webkit-slider-thumb {
+                                        opacity: 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
-                .volume {
-                    position: absolute;
-                    bottom: 10px;
-                    right: 20px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 10px;
+                &:hover {
 
-                    background-color: rgba(0, 0, 0, 0.5);
-                    padding: 5px 15px;
-                    border-radius: 10px;
-
-                    span {
-                        width: 25px;
+                    .video-player-controls {
+                        opacity: 1;
                     }
                 }
             }
@@ -255,31 +349,44 @@
             }
         }
 
+        section.left,
+        section.right {
+            span.player-badge {
+                font-weight: 800;
+                border-radius: 5px;
+                padding: 2.5px 5px;
+                font-size: 8px;
+                color: #fff !important;
+                vertical-align: top;
+            }
+        }
+
         @media screen and (max-width: 1100px) {
 
             flex-direction: column;
-            
+
             section,
             section.right,
             section.left {
                 width: 100%;
             }
-            
+
 
             .right {
                 padding-bottom: 20px;
             }
 
-            .left, .right {
-                & > button {
+            .left,
+            .right {
+                &>button {
                     width: 100%;
                 }
             }
 
             section.middle {
                 order: 1;
-                
-                .video > div:first-child {
+
+                .video>div:first-child {
                     width: 100% !important;
 
                     video {
@@ -288,13 +395,15 @@
                 }
 
             }
+
             section.left {
                 order: 3;
             }
+
             section.right {
                 order: 2;
             }
-            
+
         }
 
     }

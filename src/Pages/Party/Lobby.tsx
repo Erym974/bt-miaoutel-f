@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlayerType } from "../../Types/PlayerType";
 
 import { MdPersonRemove, MdClose } from "react-icons/md";
-import { FaPlay, FaCrown, FaExternalLinkAlt } from "react-icons/fa";
+import { FaPlay, FaCrown } from "react-icons/fa";
 
 import "./lobby.scss";
-import { PartyType } from "../../Types/PartyType";
+import { GameMode, PartyType } from "../../Types/PartyType";
 import { socket } from "../../socket";
 import ReactPlayer from "react-player";
 import { toast } from "react-toastify";
 import config from "../../config";
+import LobbyPlayerCard from "../../Component/LobbyPlayerCard";
+import { TeamType } from "../../Types/TeamType";
+import { ImYoutube2 } from "react-icons/im";
 
 interface LobbyProps {
   partyDatas: PartyType;
@@ -17,9 +20,21 @@ interface LobbyProps {
 }
 
 export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
-  const [videoUrl, setVideoUrl] = useState("");
-  const [videoViewer, setVideoViewer] = useState(false);
+  const [gameModeToggle, setGameModeToggle] = useState(false);
+
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [videoViewer, setVideoViewer] = useState<boolean>(false);
   const inviteLink = `${config.FRONT_URL}/join/`;
+
+  useEffect(() => {
+    socket.on("response#start_game", ({ error }) => {
+      toast.error(error);
+    })
+
+    return () => {
+      socket.off("response#start_game");
+    };
+  }, [])
 
   const startGame = () => {
     if (currentPlayer.id === partyDatas.host.id) {
@@ -40,43 +55,73 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
     toast.success("Copié!");
   };
 
+  const EditMode = () => {
+    if (currentPlayer.id === partyDatas.host.id) {
+      const newMode = !gameModeToggle;
+      setGameModeToggle(newMode);
+      switch (newMode) {
+        case true:
+          socket.emit("edit_mode", { id: partyDatas.id, mode: GameMode.Team });
+          break;
+        case false:
+          socket.emit("edit_mode", {
+            id: partyDatas.id,
+            mode: GameMode.Individual,
+          });
+          break;
+      }
+    }
+  };
+
+  const ChangeTeam = (team: number) => {
+    socket.emit("change_team", { id: partyDatas.id, newTeam: team });
+  };
+
   return (
     <>
       <main id="lobby">
-        <div className="players">
-          {partyDatas.players &&
-            partyDatas.players.map((player) => (
-              <div className="player" key={player.id}>
-                <img src={player.profile} alt="" className="profile" />
-                <div className="player-data">
-                  {player.id === currentPlayer.id && (
-                    <span className="isMe">You</span>
-                  )}
-                  {player.id === partyDatas.host.id && (
-                    <span className="isHost">Host</span>
-                  )}
+        {partyDatas.mode === GameMode.Individual && (
+          <div className="players">
+            {partyDatas.players &&
+              partyDatas.players.map((player) => (
+                <LobbyPlayerCard
+                  party={partyDatas}
+                  player={player}
+                  currentPlayer={currentPlayer}
+                  KickPlayer={KickPlayer}
+                  PromotePlayer={PromotePlayer}
+                />
+              ))}
+          </div>
+        )}
+
+        {partyDatas.mode === GameMode.Team && (
+          <div className="teams">
+            {partyDatas.teams.map((team: TeamType, index: number) => (
+              <div key={team.name} className="team">
+                <div className="players" style={{ borderColor: team.color }}>
+                  {partyDatas.players &&
+                    partyDatas.players.map((player) => (
+                      <>
+                        {team.players.includes(player.id) && (
+                          <LobbyPlayerCard
+                            party={partyDatas}
+                            player={player}
+                            currentPlayer={currentPlayer}
+                            KickPlayer={KickPlayer}
+                            PromotePlayer={PromotePlayer}
+                          />
+                        )}
+                      </>
+                    ))}
                 </div>
-                {currentPlayer.id === partyDatas.host.id &&
-                  player.id != currentPlayer.id && (
-                    <>
-                      <button
-                        className="kick"
-                        onClick={() => KickPlayer(player)}
-                      >
-                        <MdPersonRemove />
-                      </button>
-                      <button
-                        className="promote"
-                        onClick={() => PromotePlayer(player)}
-                      >
-                        <FaCrown />
-                      </button>
-                    </>
-                  )}
-                <span className="player-username">{player.username}</span>
+                <button onClick={() => ChangeTeam(index)}>
+                  Rejoindre l'équipe {team.name}
+                </button>
               </div>
             ))}
-        </div>
+          </div>
+        )}
 
         <div className="players mobile">
           {partyDatas.players.map((player, index) => (
@@ -130,6 +175,22 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
           ))}
         </div>
 
+        {currentPlayer.id === partyDatas.host.id && (
+          <div className="mode">
+            <span>Individuel</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                defaultValue={gameModeToggle ? "checked" : ""}
+                checked={gameModeToggle}
+                onChange={EditMode}
+              />
+              <span className="slider round"></span>
+            </label>
+            <span>Equipe</span>
+          </div>
+        )}
+
         <div className="invite">
           <div className="invite-link">
             <input
@@ -153,24 +214,22 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
         </div>
         {currentPlayer.id === partyDatas.host.id && (
           <div className="settings">
-            <h3>Lien de la vidéo : </h3>
+            <h3>Lien youtube : </h3>
             <div className="video-url">
               <input
                 type="text"
                 name="video-url"
                 id="video-url"
+                placeholder="https://youtube.com/watch?v=__________"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
               />
               <button onClick={() => setVideoViewer(!videoViewer)}>
                 <FaPlay />
               </button>
-              <a
-                href="https://www.submagic.co/tools/youtube-video-downloader"
-                target="_blank"
-              >
-                <FaExternalLinkAlt />
-              </a>
+              <button onClick={() => { window.open('https://www.youtube.com', '_blank') }} className="d-flex aic jcc">
+                <ImYoutube2 style={{ fontSize: 40, userSelect: "none" }} />
+              </button>
             </div>
 
             <div className="video-url-mobile">
@@ -185,18 +244,15 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
                 <button onClick={() => setVideoViewer(!videoViewer)}>
                   <FaPlay />
                 </button>
-                <a
-                  href="https://www.submagic.co/tools/youtube-video-downloader"
-                  target="_blank"
-                >
-                  <FaExternalLinkAlt />
-                </a>
+                <button onClick={() => { window.open('https://www.youtube.com', '_blank') }} className="d-flex aic jcc">
+                  <ImYoutube2 style={{ fontSize: 20 }} />
+                </button>
               </div>
             </div>
 
-            <div className={`video-viewer ${!videoViewer ? "d-none" : ""}`}>
+            <div className={`video-viewer ${(!videoViewer) ? "d-none" : ""}`}>
               <div className="player">
-                <ReactPlayer
+              <ReactPlayer
                   className="video-player"
                   playing={videoViewer}
                   controls={true}
@@ -207,7 +263,7 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
                 <div
                   className="close"
                   onClick={() => {
-                    setVideoViewer(!videoViewer);
+                    setVideoViewer(false);
                   }}
                 >
                   <MdClose />
@@ -218,7 +274,17 @@ export default function Lobby({ partyDatas, currentPlayer }: LobbyProps) {
         )}
         <div className="start-game">
           {currentPlayer.id === partyDatas.host.id && (
-            <button onClick={() => startGame()} disabled={!videoUrl}>
+            <button
+              onClick={() => startGame()}
+              disabled={
+                !(
+                  videoUrl &&
+                  (partyDatas.mode === GameMode.Individual ||
+                    (partyDatas.teams[0].players.length > 0 &&
+                      partyDatas.teams[1].players.length > 0))
+                )
+              }
+            >
               Commencer la partie
             </button>
           )}
