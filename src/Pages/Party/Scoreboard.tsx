@@ -128,7 +128,7 @@ export default function Scoreboard({
             </div>
           </div>
         </div>
-        <div className="teams-scoreboard">
+        {partyDatas.mode === GameMode.Team && <div className="teams-scoreboard">
           <h3 className="mb-2">Equipes</h3>
           <ul>
             {partyDatas.teams.sort((a, b) => b.score - a.score).map((team, index) => (
@@ -150,7 +150,7 @@ export default function Scoreboard({
               </li>
             ))}
           </ul>
-        </div>
+        </div>}
         <div className="player-scoreboard">
           <h3 className="mb-2">Scoreboard</h3>
           <ul>
