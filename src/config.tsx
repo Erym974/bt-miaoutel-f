@@ -1,5 +1,5 @@
 export default {
-    SOCKET_BASE_URL: 'http://localhost:3001',
-    BACK_URL: 'http://localhost:3001',
-    FRONT_URL: 'http://localhost:5173'
+    SOCKET_BASE_URL: 'https://bt-miaoutel-b.onrender.com',
+    BACK_URL: 'https://bt-miaoutel-b.onrender.com',
+    FRONT_URL: 'https://bt-miaoutel-f.onrender.com'
 }
